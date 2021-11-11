@@ -1,0 +1,320 @@
+Vending-machines-project  DEFINITIONS ::= BEGIN
+
+IMPORTS
+enterprises
+
+            FROM RFC1155-SMI
+
+        Integer32
+
+            FROM SNMPv2-SMI            
+
+        DisplayString
+
+            FROM SNMPv2-TC;
+
+Vending-machines OBJECT IDENTIFIER ::= {enterprises 22355}
+
+machineName  OBJECT IDENTIFIER ::= {Vending-machines 1}
+machineID  OBJECT IDENTIFIER ::= {Vending-machines 2}
+machineIP  OBJECT IDENTIFIER ::= {Vending-machines 3}
+machineLocation  OBJECT IDENTIFIER ::= {Vending-machines 4}
+machineContact  OBJECT IDENTIFIER ::= {Vending-machines 5}
+machineLasOpen  OBJECT IDENTIFIER ::= {Vending-machines 6}
+machineNDM  OBJECT IDENTIFIER ::= {Vending-machines 7}
+machineShelfTable  OBJECT IDENTIFIER ::= {Vending-machines 8}
+machineCoinTable  OBJECT IDENTIFIER ::= {Vending-machines 9}
+
+   
+   
+machineName OBJECT-TYPE 
+	SYNTAX DisplayString
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine name
+	"
+::= {Vending-machines 1}
+
+
+machineID OBJECT-TYPE 
+	SYNTAX DisplayString
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine ID
+	"
+::= {Vending-machines 2}
+
+
+
+machineIP OBJECT-TYPE 
+	SYNTAX IpAddress
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine IP
+	"
+::= {Vending-machines 3}
+
+
+machineLocation OBJECT-TYPE 
+	SYNTAX DisplayString
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine Location
+	"
+::= {Vending-machines 4}
+
+machineContact OBJECT-TYPE 
+	SYNTAX DisplayString
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine contact detail
+	"
+::= {Vending-machines 5}
+
+machineLasOpen OBJECT-TYPE 
+	SYNTAX TimeTicks
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine last open time
+	"
+::= {Vending-machines 6}
+
+machineNDM OBJECT-TYPE 
+	SYNTAX Integer32
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the amount of money depoisted for which a product has not been dispensed
+	"
+::= {Vending-machines 7}
+
+
+machineShelfTable OBJECT-TYPE 
+	SYNTAX SEQUENCE OF MachineShelfEntry
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine contact detail
+	"
+::= {Vending-machines 8}
+
+machineShelfEntry OBJECT-TYPE 
+	SYNTAX    MachineShelfEntry 
+	MAX-ACCESS  not-accessible    
+	STATUS  current
+	DESCRIPTION
+	"
+	The entry of machine shelf.
+	"     
+	INDEX  {machineShelfIndex}             
+::= {machineShelfTable 1}
+
+
+machineShelfEntry ::= SEQUENCE {
+	machineShelfIndex  Integer32,
+	machineShelfName   DisplayString,
+    machineShelfTable SEQUENCE OF ShelfEntry,
+}
+
+
+machineShelfIndex OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	
+	"
+::= {machineShelfEntry 1}
+
+machineShelfName OBJECT-TYPE 
+	SYNTAX  DisplayString
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	
+	"
+::= {machineShelfEntry 2}
+
+
+machineShelfTable OBJECT-TYPE 
+	SYNTAX SEQUENCE OF shelfEntry
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine contact detail
+	"
+::= {machineShelfEntry 3}
+
+shelfEntry OBJECT-TYPE 
+	SYNTAX    ShelfEntry 
+	MAX-ACCESS  not-accessible    
+	STATUS  current
+	DESCRIPTION
+	"
+	
+	"     
+	INDEX  {ShelfIndex}             
+::= {machineShelfTable 1}
+
+shelfEntry ::= SEQUENCE {
+	ShelfIndex  Integer32,
+    ShelfName DisplayString,
+    ShelfCost Integer32,
+    ShelfLasMount Integer32,
+	ShelfCurMount Integer32
+}
+
+ShelfIndex OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the different type of objects
+	"
+::= {shelfEntry 1}
+
+ShelfName OBJECT-TYPE 
+	SYNTAX  DisplayString
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the name of different type of objects
+	"
+::= {shelfEntry 2}
+
+ShelfCost OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	 Store the costs of different type of objects
+	"
+::= {shelfEntry 3}
+
+ShelfLasAmount OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of last information of vending machine
+	"
+::= {shelfEntry 4}
+
+ShelfCurAmount OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	
+	"
+::= {shelfEntry 5}
+
+
+
+
+machineCoinTable OBJECT-TYPE 
+	SYNTAX SEQUENCE OF machineCoinEntry
+	MAX-ACCESS not-accessible
+	STATUS  current
+	DESCRIPTION 
+	"
+	Store the vending machine coin detail which can only story the 10.20.50c and 1£¦2 $
+	"
+::= {Vending-machines 9}
+
+machineCoinEntry OBJECT-TYPE 
+	SYNTAX    MachineCoinEntry 
+	MAX-ACCESS  not-accessible    
+	STATUS  current
+	DESCRIPTION
+	"
+	This is the coin entry.
+	"                 
+::= {machineCoinTable 1}
+
+
+machineCoinEntry ::= SEQUENCE {
+	coin10 Integer32,
+	coin20 Integer32,
+	coin50 Integer32,
+	coin100 Integer32,
+	coin200 Integer32,
+}
+
+coin10 OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of 10c
+	"
+::= {machineCoinEntry 1}
+
+coin20 OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of 20c
+	"
+::= {machineCoinEntry 2}
+
+coin50 OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of 50c
+	"
+::= {machineCoinEntry 3}
+
+coin100 OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of 1$
+	"
+::= {machineCoinEntry 4}
+
+coin200 OBJECT-TYPE 
+	SYNTAX  Integer32
+	MAX-ACCESS read-write
+	STATUS current
+	DESCRIPTION 
+	"
+	Store the amount of 2$
+	"
+::= {machineCoinEntry 5}
+
+
+
+
+
+END
